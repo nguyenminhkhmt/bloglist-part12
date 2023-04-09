@@ -103,7 +103,7 @@ const BlogDetail = (props) => {
           </tr>
           <tr>
             <td>added by:</td>
-            <td>{blog.user.name}</td>
+            <td>{blog.user ? blog.user.name : '<Unkown>'}</td>
           </tr>
         </tbody>
       </Table>

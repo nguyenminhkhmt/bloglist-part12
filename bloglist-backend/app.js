@@ -21,19 +21,19 @@ mongoose.connect(config.MONGODB_URI)
 
 app.use(cors())
 // eslint-disable-next-line no-undef
-app.use(express.static(path.join(__dirname, 'build')))
+// app.use(express.static(path.join(__dirname, 'build')))
 app.use(express.json())
 app.use(middleware.requestLogger)
 app.use(middleware.tokenExtractor)
 
-app.use('/api/blogs', middleware.userExtractor, blogsRouter)
-app.use('/api/users', usersRouter)
-app.use('/api/login', loginRouter)
+app.use('/blogs', middleware.userExtractor, blogsRouter)
+app.use('/users', usersRouter)
+app.use('/login', loginRouter)
 
 // eslint-disable-next-line no-undef
 if (process.env.NODE_ENV === 'test') {
   const testingRouter = require('./controllers/tests')
-  app.use('/api/testing', testingRouter)
+  app.use('/testing', testingRouter)
 }
 
 app.use(middleware.unknownEndpoint)

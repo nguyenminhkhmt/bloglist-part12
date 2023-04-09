@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:  
+  server:
+    image: bloglist-backend-dev
+    build:
+      context: ./bloglist-backend
+      dockerfile: dev.Dockerfile
+      args:
+        - MONGODB_URI=mongodb+srv://admin:admin@phonebook.5zbr5hb.mongodb.net/bloglist?retryWrites=true&w=majority
+        - SECRET=this_is_a_secret_value_:)
+    volumes:
+      - ./bloglist-backend:/usr/src/app
+    container_name: bloglist-backend-dev
+  
+  app:
+    environment:
+      - REACT_APP_BACKEND_URL=/api/
+    image: bloglist-frontend-dev
+    build:
+      context: ./bloglist-frontend
+      dockerfile: dev.Dockerfile
+    volumes:
+      - ./bloglist-frontend/:/usr/src/app
+    container_name: bloglist-frontend-dev
+    depends_on:
+      - server
+  
+  nginx:
+    image: nginx:latest
+    volumes: 
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy-dev
+    depends_on:
+      - server
+      - app

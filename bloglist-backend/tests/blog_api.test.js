@@ -13,7 +13,7 @@ beforeEach(async () => {
     password: '12345678'
   }
   const result = await api
-    .post('/api/login')
+    .post('/login')
     .send(loginParams)
     .expect(200)
     .expect('Content-Type', /application\/json/)
@@ -34,19 +34,19 @@ describe('when request blog api', () => {
   // 4.8: Blog list tests, step1
   test('blogs are returned as json', async () => {
     await api
-      .get('/api/blogs')
+      .get('/blogs')
       .expect(200)
       .expect('Content-Type', /application\/json/)
   })
 
   test('there are several blogs', async () => {
-    const response = await api.get('/api/blogs')
+    const response = await api.get('/blogs')
     expect(response.body).toHaveLength(helper.initialBlogs.length)
   })
 
   // 4.9*: Blog list tests, step2
   test('the first blog is about something', async () => {
-    const response = await api.get('/api/blogs')
+    const response = await api.get('/blogs')
     expect(response.body[0]).toBeDefined()
 
     const titles = response.body.map(blog => blog.title)
@@ -66,7 +66,7 @@ describe('when request blog api', () => {
     }
 
     await api
-      .post('/api/blogs')
+      .post('/blogs')
       .set('Authorization', `Bearer ${token}`)
       .send(sample)
       .expect(201)
@@ -88,7 +88,7 @@ describe('when request blog api', () => {
     }
 
     const response = await api
-      .post('/api/blogs')
+      .post('/blogs')
       .set('Authorization', `Bearer ${token}`)
       .send(sample)
 
@@ -104,7 +104,7 @@ describe('when request blog api', () => {
     }
 
     await api
-      .post('/api/blogs')
+      .post('/blogs')
       .set('Authorization', `Bearer ${token}`)
       .send(sample)
       .expect(400)
@@ -121,7 +121,7 @@ describe('when request blog api', () => {
     const id = blogIds[0]
 
     await api
-      .delete(`/api/blogs/${id}`)
+      .delete(`/blogs/${id}`)
       .set('Authorization', `Bearer ${token}`)
       .expect(204)
 
@@ -146,7 +146,7 @@ describe('when request blog api', () => {
     }
 
     const response = await api
-      .put(`/api/blogs/${id}`)
+      .put(`/blogs/${id}`)
       .set('Authorization', `Bearer ${token}`)
       .send(sampleData)
       .expect(200)
